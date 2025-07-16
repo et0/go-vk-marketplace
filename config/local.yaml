@@ -4,6 +4,6 @@ server:
 database:
   host: "localhost"
   port: "5432"
-  user: "leonid"
+  username: "leonid"
   password: ""
-  name: "marketplace"
+  basename: "marketplace"
