@@ -30,6 +30,27 @@ func (p *Postgres) FindByUsername(username string) (*model.User, error) {
 	return &user, err
 }
 
+func (p *Postgres) FindByID(id uint) (*model.User, error) {
+	conn, err := p.Pool.Acquire(context.Background())
+	if err != nil {
+		log.Fatal("DB connect failed:", err)
+	}
+	defer conn.Release()
+
+	var user model.User
+
+	err = conn.QueryRow(context.Background(), "SELECT * FROM users WHERE id = $1", id).
+		Scan(&user.ID, &user.Username, &user.Password, &user.CreatedAt, &user.UpdatedAt)
+
+	if errors.Is(err, pgx.ErrNoRows) {
+		return nil, nil
+	} else if err != nil {
+		return nil, err
+	}
+
+	return &user, err
+}
+
 func (p *Postgres) Create(username, password string) (*model.User, error) {
 	conn, err := p.Pool.Acquire(context.Background())
 	if err != nil {
