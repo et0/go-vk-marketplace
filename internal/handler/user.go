@@ -31,7 +31,7 @@ func (h *UserHandler) Signup(c echo.Context) error {
 
 	existingUser, err := h.userService.FindByUsername(req.Username)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "internal server error", err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "internal server error")
 	}
 	if existingUser != nil {
 		return echo.NewHTTPError(http.StatusConflict, "username already exists")
