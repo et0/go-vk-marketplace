@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func New(db storage.Database) *echo.Echo {
+func New(db storage.Database, jwtSecret string) *echo.Echo {
 	e := echo.New()
 
 	// Инициализация сервисов для работы с бд
@@ -15,8 +15,10 @@ func New(db storage.Database) *echo.Echo {
 
 	// Инициализация хендлеров
 	userHandler := handler.NewUserHandler(userService)
+	authHandler := handler.NewAuthHandler(userService, jwtSecret)
 
-	e.POST("/register", userHandler.Register)
+	e.POST("/signup", userHandler.Signup)
+	e.POST("/login", authHandler.Login)
 
 	return e
 }
