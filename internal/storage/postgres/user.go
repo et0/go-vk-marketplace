@@ -51,7 +51,7 @@ func (p *Postgres) FindByID(id uint) (*model.User, error) {
 	return &user, err
 }
 
-func (p *Postgres) Create(username, password string) (*model.User, error) {
+func (p *Postgres) CreateUser(username, password string) (*model.User, error) {
 	conn, err := p.Pool.Acquire(context.Background())
 	if err != nil {
 		log.Fatal("DB connect failed:", err)

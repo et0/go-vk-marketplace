@@ -18,7 +18,7 @@ func (s *UserService) FindByUsername(username string) (*model.User, error) {
 }
 
 func (s *UserService) Create(username, password string) (*model.User, error) {
-	return s.db.Create(username, password)
+	return s.db.CreateUser(username, password)
 }
 
 func (s *UserService) FindByID(id uint) (*model.User, error) {
