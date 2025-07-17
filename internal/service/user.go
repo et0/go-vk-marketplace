@@ -1,8 +1,6 @@
 package service
 
 import (
-	"fmt"
-
 	"github.com/et0/go-vk-marketplace/internal/model"
 	"github.com/et0/go-vk-marketplace/internal/storage"
 )
@@ -15,11 +13,10 @@ func NewUserService(db storage.Database) *UserService {
 	return &UserService{db: db}
 }
 
-func (s *UserService) GetAll() (*model.User, error) {
-	user, err := s.db.GetAll()
-	if err != nil {
-		return user, fmt.Errorf("DB GetAll: %w", err)
-	}
+func (s *UserService) FindByUsername(username string) (*model.User, error) {
+	return s.db.FindByUsername(username)
+}
 
-	return user, nil
+func (s *UserService) Create(username, password string) (*model.User, error) {
+	return s.db.Create(username, password)
 }
