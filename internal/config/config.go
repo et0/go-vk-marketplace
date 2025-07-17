@@ -13,7 +13,8 @@ type Config struct {
 }
 
 type Server struct {
-	Port string `yaml:"port"`
+	Port      string `yaml:"port"`
+	JWTSecret string `yaml:"jwt_secret"`
 }
 
 type Database struct {
