@@ -23,7 +23,7 @@ type RegisterRequest struct {
 	Password string `json:"password" validate:"required,min=8,max=32"`
 }
 
-func (h *UserHandler) Register(c echo.Context) error {
+func (h *UserHandler) Signup(c echo.Context) error {
 	var req RegisterRequest
 	if err := c.Bind(&req); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
