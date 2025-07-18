@@ -7,5 +7,5 @@ type Database interface {
 	FindByUsername(username string) (*model.User, error)
 	FindByID(id uint) (*model.User, error)
 
-	CreateAd(ad *model.Ad)
+	CreateAd(ad *model.Ad) (*model.Ad, error)
 }
