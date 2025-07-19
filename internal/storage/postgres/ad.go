@@ -60,7 +60,7 @@ LEFT JOIN users u ON u.id = a.user_id WHERE a.price BETWEEN $1 AND $2`
 
 	sql += " LIMIT $3 OFFSET $4"
 
-	rows, err := conn.Query(context.Background(), sql, minPrice, maxPrice, limit, page)
+	rows, err := conn.Query(context.Background(), sql, minPrice, maxPrice, limit, (page-1)*limit)
 	if err != nil {
 		return nil, err
 	}
