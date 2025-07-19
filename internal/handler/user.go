@@ -5,6 +5,7 @@ import (
 
 	"github.com/et0/go-vk-marketplace/internal/model"
 	"github.com/et0/go-vk-marketplace/internal/service"
+	"github.com/go-playground/validator/v10"
 
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -19,13 +20,17 @@ func NewUserHandler(userService *service.UserService) *UserHandler {
 }
 
 type RegisterRequest struct {
-	Username string `json:"username" validate:"required,min=3,max=32"`
+	Username string `json:"username" validate:"required,min=3,max=64"`
 	Password string `json:"password" validate:"required,min=8,max=32"`
 }
 
 func (h *UserHandler) Signup(c echo.Context) error {
 	var req RegisterRequest
 	if err := c.Bind(&req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	if err := validator.New().Struct(req); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
