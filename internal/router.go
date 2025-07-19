@@ -21,12 +21,11 @@ func New(db storage.Database, jwtSecret string) *echo.Echo {
 	adService := service.NewAdService(db)
 
 	// Инициализация хендлеров
-	userHandler := handler.NewUserHandler(userService)
-	authHandler := handler.NewAuthHandler(userService, jwtSecret)
+	userHandler := handler.NewUserHandler(userService, jwtSecret)
 	adHandler := handler.NewAdHandler(userService, adService)
 
 	e.POST("/signup", userHandler.Signup)
-	e.POST("/login", authHandler.Login)
+	e.POST("/login", userHandler.Login)
 	// e.GET("/ads", adHandler.GetAll)
 	e.POST("/ads", adHandler.Create, middleware.IsAuth)
 
