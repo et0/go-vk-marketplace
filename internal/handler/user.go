@@ -50,14 +50,12 @@ func (h *UserHandler) Signup(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to create user")
 	}
 
-	response := model.User{
+	return c.JSON(http.StatusCreated, model.User{
 		ID:        createdUser.ID,
 		Username:  createdUser.Username,
 		CreatedAt: createdUser.CreatedAt,
 		UpdatedAt: createdUser.UpdatedAt,
-	}
-
-	return c.JSON(http.StatusCreated, response)
+	})
 }
 
 func (h *UserHandler) Login(c echo.Context) error {
