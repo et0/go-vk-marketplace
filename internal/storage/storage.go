@@ -8,4 +8,5 @@ type Database interface {
 	FindByID(id uint) (*model.User, error)
 
 	CreateAd(ad *model.Ad) (*model.Ad, error)
+	GetAll(page, limit int, sortBy, order string, minPrice, maxPrice int) ([]*model.Ad, error)
 }

@@ -34,3 +34,45 @@ JOIN users u ON u.id = a.user_id WHERE a.id = $1`
 
 	return &newAd, err
 }
+
+func (p *Postgres) GetAll(page, limit int, sortBy, order string, minPrice, maxPrice int) ([]*model.Ad, error) {
+	conn, err := p.Pool.Acquire(context.Background())
+	if err != nil {
+		log.Fatal("DB connect failed:", err)
+	}
+	defer conn.Release()
+
+	sql := `SELECT
+	a.id, a.title, a.description, a.image_url, a.price, a.created_at, a.user_id, u.username 
+FROM ads a
+LEFT JOIN users u ON u.id = a.user_id WHERE a.price BETWEEN $1 AND $2`
+
+	if maxPrice == 0 || maxPrice < minPrice {
+		maxPrice = 2147483647
+	}
+
+	sql += " ORDER BY a." + sortBy
+	if order == "desc" {
+		sql += " DESC"
+	} else {
+		sql += " ASC"
+	}
+
+	sql += " LIMIT $3 OFFSET $4"
+
+	rows, err := conn.Query(context.Background(), sql, minPrice, maxPrice, limit, page)
+	if err != nil {
+		return nil, err
+	}
+
+	ads := make([]*model.Ad, 0, limit)
+	for rows.Next() {
+		var a model.Ad
+		if err := rows.Scan(&a.ID, &a.Title, &a.Description, &a.ImageURL, &a.Price, &a.CreatedAt, &a.UserID, &a.User.Username); err != nil {
+			return nil, err
+		}
+		ads = append(ads, &a)
+	}
+
+	return ads, nil
+}
