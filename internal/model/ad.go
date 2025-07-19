@@ -28,5 +28,5 @@ type AdResponse struct {
 	Price       uint      `json:"price"`
 	CreatedAt   time.Time `json:"created_at"`
 	Author      string    `json:"author"`
-	IsMine      bool      `json:"is_mine,omitempty"`
+	IsMine      bool      `json:"is_mine"`
 }

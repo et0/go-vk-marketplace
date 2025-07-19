@@ -2,19 +2,20 @@ package router
 
 import (
 	"github.com/et0/go-vk-marketplace/internal/handler"
-	"github.com/et0/go-vk-marketplace/internal/middleware"
+	myMD "github.com/et0/go-vk-marketplace/internal/middleware"
 	"github.com/et0/go-vk-marketplace/internal/service"
 	"github.com/et0/go-vk-marketplace/internal/storage"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func New(db storage.Database, jwtSecret string) *echo.Echo {
 	e := echo.New()
 
-	// e.Use(middleware.Logger())
-	// e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
-	e.Use(middleware.CheckToken(jwtSecret))
+	e.Use(myMD.CheckToken(jwtSecret))
 
 	// Инициализация сервисов для работы с бд
 	userService := service.NewUserService(db)
@@ -26,8 +27,8 @@ func New(db storage.Database, jwtSecret string) *echo.Echo {
 
 	e.POST("/signup", userHandler.Signup)
 	e.POST("/login", userHandler.Login)
-	// e.GET("/ads", adHandler.GetAll)
-	e.POST("/ads", adHandler.Create, middleware.IsAuth)
+	e.GET("/ads", adHandler.GetAll)
+	e.POST("/ads", adHandler.Create, myMD.IsAuth)
 
 	return e
 }
