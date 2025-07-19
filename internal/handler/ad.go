@@ -6,6 +6,7 @@ import (
 
 	"github.com/et0/go-vk-marketplace/internal/model"
 	"github.com/et0/go-vk-marketplace/internal/service"
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
 
@@ -23,6 +24,10 @@ func (h *AdHandler) Create(c echo.Context) error {
 
 	var req model.AdNewRequest
 	if err := c.Bind(&req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	if err := validator.New().Struct(req); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
