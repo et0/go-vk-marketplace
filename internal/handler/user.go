@@ -19,13 +19,8 @@ func NewUserHandler(userService *service.UserService) *UserHandler {
 	return &UserHandler{userService: userService}
 }
 
-type RegisterRequest struct {
-	Username string `json:"username" validate:"required,min=3,max=64"`
-	Password string `json:"password" validate:"required,min=8,max=32"`
-}
-
 func (h *UserHandler) Signup(c echo.Context) error {
-	var req RegisterRequest
+	var req model.SignupRequest
 	if err := c.Bind(&req); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}

@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/et0/go-vk-marketplace/internal/model"
 	"github.com/et0/go-vk-marketplace/internal/service"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
@@ -19,17 +20,8 @@ func NewAuthHandler(userService *service.UserService, jwtSecret string) *AuthHan
 	return &AuthHandler{userService: userService, jwtSecret: jwtSecret}
 }
 
-type LoginRequest struct {
-	Username string `json:"username" validate:"required,min=3,max=32"`
-	Password string `json:"password" validate:"required,min=8,max=32"`
-}
-
-type LoginResponse struct {
-	Token string `json:"token"`
-}
-
 func (h *AuthHandler) Login(c echo.Context) error {
-	var req LoginRequest
+	var req model.LoginRequest
 	if err := c.Bind(&req); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
@@ -56,5 +48,5 @@ func (h *AuthHandler) Login(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to generate token")
 	}
 
-	return c.JSON(http.StatusOK, LoginResponse{Token: tokenString})
+	return c.JSON(http.StatusOK, model.LoginResponse{Token: tokenString})
 }
