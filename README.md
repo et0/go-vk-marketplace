@@ -2,6 +2,20 @@
 
 **Ссылка на описание задачи:** https://github.com/et0/go-vk-marketplace/blob/master/docs/task.md
 
+## Конфигурационный файл config/local.yaml
+```yaml
+server:
+  port: "8080"
+  jwt_secret: "your-secret-word"
+  
+database:
+  host: "db"
+  port: "5432"
+  username: "postgres"
+  password: "postgres"
+  basename: "marketplace"
+```
+
 ## Docker
 ```bash
 docker-compose up -d --build
