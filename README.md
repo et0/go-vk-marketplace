@@ -16,6 +16,11 @@ database:
   basename: "marketplace"
 ```
 
+## Сборка
+```bash
+go build -o go-vk-marketplace cmd/api/main.go
+```
+
 ## Docker
 ```bash
 docker-compose up -d --build
