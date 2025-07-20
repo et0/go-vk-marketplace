@@ -1,11 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
+	router "github.com/et0/go-vk-marketplace/internal"
 	"github.com/et0/go-vk-marketplace/internal/config"
-	"github.com/et0/go-vk-marketplace/internal/service"
 	"github.com/et0/go-vk-marketplace/internal/storage/postgres"
 )
 
@@ -17,10 +16,12 @@ func main() {
 
 	pg, err := postgres.New(cfg.DB.Username, cfg.DB.Password, cfg.DB.Host, cfg.DB.Port, cfg.DB.Basename)
 	if err != nil {
-		log.Fatal("DB init failed:", err)
+		log.Fatalf("DB init failed: %s", err)
 	}
 	defer pg.Close()
 
-	userService := service.NewUserService(pg)
-	fmt.Println(userService.GetAll())
+	e := router.New(pg, cfg.HTTP.JWTSecret)
+	if err := e.Start(":" + cfg.HTTP.Port); err != nil {
+		log.Fatalf("Server start failed: %s", err)
+	}
 }
