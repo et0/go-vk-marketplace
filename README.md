@@ -1,5 +1,7 @@
 # Go VK marketplace
 
+Приложение представляет из себя реализацию REST-API условного маркетплейса. В качестве веб-фреймворка используется Echo. База данных Postgres.
+
 **Ссылка на описание задачи:** https://github.com/et0/go-vk-marketplace/blob/master/docs/task.md
 
 ## Конфигурационный файл config/local.yaml
