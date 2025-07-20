@@ -2,6 +2,11 @@
 
 **Ссылка на описание задачи:** https://github.com/et0/go-vk-marketplace/blob/master/docs/task.md
 
+## Docker
+```bash
+docker-compose up -d --build
+```
+
 ## API Endpoints
 
 ### Регистрация пользователя
