@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -41,7 +40,6 @@ func (h *AdHandler) Create(c echo.Context) error {
 	}
 
 	createdAd, err := h.adService.Create(ad)
-	fmt.Println(createdAd, err)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to create listing")
 	}
@@ -92,7 +90,6 @@ func (h *AdHandler) GetAll(c echo.Context) error {
 
 	ads, err := h.adService.GetAll(page, limit, sortBy, order, minPrice, maxPrice)
 	if err != nil {
-		fmt.Println(err)
 		return echo.NewHTTPError(http.StatusInternalServerError, "failed to fetch listings")
 	}
 
@@ -116,8 +113,6 @@ func (h *AdHandler) GetAll(c echo.Context) error {
 			IsMine:      isMine,
 		}
 	}
-
-	fmt.Println(response)
 
 	return c.JSON(http.StatusOK, response)
 }
